@@ -5,22 +5,9 @@
 	<title>Buli-Tipp</title>
 <link rel="stylesheet" type="text/css" href="outsourcing/standard.css">		
 
-<script language="JavaScript" type="text/javascript">
-function colorchange(game, reset1, reset2)
-{
-document.getElementById(game).style.backgroundColor = "#FFCC00";
-document.getElementById(reset1).style.backgroundColor = "#f7f7f7";
-document.getElementById(reset2).style.backgroundColor = "#f7f7f7";
-}
-
-</script>
-
-<script type='text/javascript' src='outsourcing/ajax.js'></script>
-<script type='text/javascript' src='outsourcing/waitingmessage.js'></script>
-
 </head>
 
-<body onload="waitingmessage()">
+<body>
 <cfinclude template="includes/__header.cfm">
 
 <cfif spieltag is "now">
@@ -53,7 +40,7 @@ WHERE Spieltage.Spieltag=#spieltag# AND Spieltage.Tore_Heim >= 0
 <cfquery name="usersvertikal" datasource="bulitipp" dbtype="ODBC">
 SELECT *
 FROM Users
-WHERE Status > 0 AND groupID = session.groupID
+WHERE Status > 0 AND groupID = #session.groupID#
 Order by ID
 </cfquery>		
 	<cfset userliste = "">

@@ -99,22 +99,22 @@ WHERE Spieltage.Spieltag=#spieltag#
 		<cfif Tipps.Tendenz is 1>
 	    <tr>
 		  <td><div align="center" id="game_#ID#_1" style="border:1px solid ##000000; -moz-border-radius:4px; background-color: ##ffffff; width:18px;">1</div></td>
-		  <td colspan="2"><a href="user_spieltag_details.cfm?spieltag=#spieltag#"><img src="pictures/icon_members_2.gif" border="0" alt=""></a></td>
+		  <td colspan="2"><cfif Tore_Heim GTE 0><a href="user_spieltag_details.cfm?spieltag=#spieltag#"><img src="pictures/icon_members_2.gif" border="0" alt=""></a></cfif></td>
 		</tr>
 	   <cfelseif Tipps.Tendenz is 0>
 	    <tr>
 		  <td><div align="center" id="game_#ID#_0"  style="border:1px solid ##000000; -moz-border-radius:4px; background-color: ##ffffff; width:18px;">0</div></td>
-		  <td colspan="2"><a href="user_spieltag_details.cfm?spieltag=#spieltag#"><img src="pictures/icon_members_2.gif" border="0" alt=""></a></td>
+		  <td colspan="2"><cfif Tore_Heim GTE 0><a href="user_spieltag_details.cfm?spieltag=#spieltag#"><img src="pictures/icon_members_2.gif" border="0" alt=""></a></cfif></td>
 		</tr>
 	   <cfelseif Tipps.Tendenz is 2>
 	    <tr>
 		  <td><div align="center" id="game_#ID#_2" style="border:1px solid ##000000; -moz-border-radius:4px; background-color: ##ffffff; width:18px;">2</div></td>
-		  <td colspan="2"><a href="user_spieltag_details.cfm?spieltag=#spieltag#"><img src="pictures/icon_members_2.gif" border="0" alt=""></a></td>
+		  <td colspan="2"><cfif Tore_Heim GTE 0><a href="user_spieltag_details.cfm?spieltag=#spieltag#"><img src="pictures/icon_members_2.gif" border="0" alt=""></a></cfif></td>
 		</tr>
 	   <cfelse>
 	    <tr>
 		  <td><div align="center" id="game_#ID#_1" style="border:1px solid ##000000; -moz-border-radius:4px; background-color: ##FECCCC; width:18px;">x</div></td>
-		  <td colspan="2"><a href="user_spieltag_details.cfm?spieltag=#spieltag#"><img src="pictures/icon_members_2.gif" border="0" alt=""></a></td>
+		  <td colspan="2"><cfif Tore_Heim GTE 0><a href="user_spieltag_details.cfm?spieltag=#spieltag#"><img src="pictures/icon_members_2.gif" border="0" alt=""></a></cfif></td>
 		</tr>
 		</cfif>		
 		
