@@ -7,7 +7,7 @@
 <link rel="SHORTCUT ICON" HREF="/favicon.ico">		
 </head>
 
-<body onload="waitingmessage()">
+<body>
 
 <cfinclude template="includes/__header.cfm">
 

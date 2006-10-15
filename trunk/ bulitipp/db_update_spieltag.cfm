@@ -37,11 +37,14 @@
 				Tore_Heim = #tore_heim#,
 				Tore_Gast = #tore_gast#
 			WHERE ID = #gameID#
-		</CFQUERY>	
+</CFQUERY>
+
+	
 		
 </cfif>
 
 </cfloop>
+
 </cfoutput>
 
 <cfquery name="ranking" datasource="bulitipp" dbtype="ODBC">
@@ -84,6 +87,96 @@ WHERE Status > 0
 		</CFQUERY>
 
 </cfoutput>
+
+
+
+
+
+
+
+
+
+<cfloop index="i" from="1" to="18" step="1">
+	
+	
+<cfquery name="Spiele" datasource="bulitipp" dbtype="ODBC">
+SELECT *
+FROM Spieltage
+WHERE ((((Spieltage.Heim)=#i#) AND ((Spieltage.Tore_Heim) Is Not Null)) OR (((Spieltage.Gast)=#i#) AND ((Spieltage.Tore_Heim) Is Not Null)))
+</cfquery>	
+
+<cfif spiele.recordcount GT 0>
+<cfset gesamttordifferenz = 0>
+<cfset gespieltespiele = 0>
+<cfset erspieltepunkte = 0>
+<cfset toregeschossen = 0>
+<cfset torereinbekommen = 0>
+
+<cfoutput query="Spiele">
+<cfset tordifferenz = #Tore_Heim#-#Tore_Gast#>
+
+<cfif #heim# is #i#>
+	
+  <cfset gespieltespiele = gespieltespiele+1>	
+  <cfif tordifferenz GT 0>
+	<CFSET erspieltepunkte = erspieltepunkte+3>
+  <cfelseif tordifferenz IS 0>
+    <CFSET erspieltepunkte = erspieltepunkte+1>
+  <cfelse>
+    <CFSET erspieltepunkte = erspieltepunkte+0>
+  </cfif>
+  <cfset toregeschossen = toregeschossen+#Tore_Heim#>
+  <cfset torereinbekommen = torereinbekommen+#Tore_Gast#>
+  <cfset gesamttordifferenz = gesamttordifferenz+tordifferenz>
+</cfif>
+
+<cfif #gast# is #i#>
+  
+  <cfset gespieltespiele = gespieltespiele+1>
+  <cfif tordifferenz GT 0>
+	<CFSET erspieltepunkte = erspieltepunkte+0>
+  <cfelseif tordifferenz IS 0>
+    <CFSET erspieltepunkte = erspieltepunkte+1>
+  <cfelse>
+    <CFSET erspieltepunkte = erspieltepunkte+3>
+  </cfif>
+  <cfset toregeschossen = toregeschossen+#Tore_Gast#>
+  <cfset torereinbekommen = torereinbekommen+#Tore_Heim#>
+  <cfset gesamttordifferenz = gesamttordifferenz-tordifferenz>
+</cfif>
+
+</cfoutput>	
+	
+<CFQUERY NAME="updatetabelle" datasource="bulitipp">
+			UPDATE Season2007 SET
+				Spiele = #gespieltespiele#,
+				Punkte = #erspieltepunkte#,
+				Tore_Heim = #toregeschossen#,
+				Tore_Gast = #torereinbekommen#,
+				Tordifferenz = #gesamttordifferenz#
+			WHERE TeamID = #i#
+</CFQUERY>	
+
+</cfif>
+
+</cfloop>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 <cflocation url="spieltag.cfm?spieltagID=#form.spieltagID#" addtoken="No">
