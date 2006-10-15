@@ -24,6 +24,7 @@ ORDER BY Spieltage.ZeitDatum, Spieltage.Spieltag ASC
 SELECT Spieltage.ID, Spieltage.Heim, Spieltage.Gast, Spieltage.Spieltag, Spieltage.Tore_Heim, Spieltage.Tore_Gast, Spieltage.ZeitDatum, Teams.Name, Teams2.Name AS away
 FROM Teams AS Teams2 INNER JOIN (Teams INNER JOIN Spieltage ON Teams.ID = Spieltage.Heim) ON Teams2.ID = Spieltage.Gast
 WHERE Spieltage.Spieltag=#spieltag# AND Spieltage.Tore_Heim >= 0
+ORDER BY Spieltage.ZeitDatum
 </cfquery>	
 
 <br>
