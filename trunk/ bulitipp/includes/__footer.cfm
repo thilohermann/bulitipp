@@ -1,11 +1,11 @@
 <br>
 <cfoutput>
-<div class="distance" style="border:1px solid ##000000; -moz-border-radius:10px; background-color: ##f0f0f0; width:700px;"><table border="0" cellpadding="0" cellspacing="0" width="700"><tr><td>Eingeloggt mit User: <b>#Session.name#</b> (Berechtigungsstufe: #session.status#)</td><td align="right"><a href="logout.cfm">>>> logout</a>&nbsp;</td></tr></table></div>
+<div class="distance" style="border:1px solid ##000000; -moz-border-radius:10px; background-color: ##f0f0f0; width:700px;"><table border="0" cellpadding="0" cellspacing="0" width="100%"><tr><td>Eingeloggt mit User: <b>#Session.name#</b> (Berechtigungsstufe: #session.status#)</td><td align="right"><a href="logout.cfm">>>> logout</a>&nbsp;</td></tr></table></div>
 </cfoutput>
 <br>
 <table border="0" cellpadding="0" cellspacing="0" width="700">
   <tr>
-	<td class="footer">Version: 0.83</td>
+	<td class="footer">Version: 1.01</td>
 	<td align="center">
 	  <table border="0" cellpadding="0" cellspacing="0">
 		<tr>
