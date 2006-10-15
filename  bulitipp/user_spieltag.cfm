@@ -37,6 +37,14 @@ ORDER BY Spieltage.ZeitDatum, Spieltage.Spieltag ASC
 SELECT Spieltage.ID, Spieltage.Heim, Spieltage.Gast, Spieltage.Spieltag, Spieltage.Tore_Heim, Spieltage.Tore_Gast, Spieltage.ZeitDatum, Teams.Name, Teams2.Name AS away
 FROM Teams AS Teams2 INNER JOIN (Teams INNER JOIN Spieltage ON Teams.ID = Spieltage.Heim) ON Teams2.ID = Spieltage.Gast
 WHERE Spieltage.Spieltag=#spieltag#
+ORDER BY Spieltage.ZeitDatum
+</cfquery>	
+
+<!-- aktive useranzahl -->
+<cfquery name="Users" datasource="bulitipp" dbtype="ODBC">
+SELECT *
+FROM Users
+WHERE Status > 0 AND groupID = #session.groupID#
 </cfquery>	
 
 <br>
@@ -45,7 +53,7 @@ WHERE Spieltage.Spieltag=#spieltag#
   <tr>
     <td><b>Termin (<cfoutput>#spieltag#. Spieltag</cfoutput>)</b></td>
     <td><b>Spiel</b></td>
-	<td><b>Tipp</b></td>
+	<td><table border="0" cellspacing="0" cellpadding="0"><tr><td><b>Tipp</b></td><cfoutput query="Spiele" startrow=1 maxrows=1><cfif aktuell GT #zeitdatum# AND Tore_Heim GTE 0><td>&nbsp;&nbsp;</td><td><a href="user_spieltag_details.cfm?spieltag=#spieltag#"><img src="pictures/icon_members_2.gif" border="0" alt=""></a></td></cfif></cfoutput></tr></table></td>
 	<td align="center"><img src="pictures/icon_fussball.gif" border="0"></td>
   </tr>
   <tr>
@@ -63,62 +71,53 @@ WHERE Spieltage.Spieltag=#spieltag#
 		SELECT *
 		FROM Tipps
 		WHERE Tipps.UserID=#session.userid# AND Tipps.SpielID=#id#
-		</cfquery>		  
+		</cfquery>		 
+		
+		<cfquery name="UserTipps" datasource="bulitipp" dbtype="ODBC">
+		SELECT *
+		FROM Tipps
+		WHERE Tipps.SpielID=#id#
+		</cfquery>	
+		 
 	  
-	  
+	  	 <tr>
 	   <cfif aktuell LT #zeitdatum#>
-	  
 	   <cfif Tipps.Tendenz is 1>
-	    <tr>
 		  <td onclick="ajax_savetipp('#ID#','#session.userid#','1','game_#ID#_1','game_#ID#_0','game_#ID#_2')"><div align="center" id="game_#ID#_1" style="border:1px solid ##000000; -moz-border-radius:4px; background-color: ##FFCC00; width:18px; cursor: pointer;">1</div></td>
 		  <td onclick="ajax_savetipp('#ID#','#session.userid#','0','game_#ID#_0','game_#ID#_1','game_#ID#_2')"><div align="center" id="game_#ID#_0"  style="border:1px solid ##000000; -moz-border-radius:4px; background-color: ##f7f7f7; width:18px; cursor: pointer;">0</div></td>
 		  <td onclick="ajax_savetipp('#ID#','#session.userid#','2','game_#ID#_2','game_#ID#_0','game_#ID#_1')"><div align="center" id="game_#ID#_2" style="border:1px solid ##000000; -moz-border-radius:4px; background-color: ##f7f7f7; width:18px; cursor: pointer;">2</div></td>
-		</tr>
 	   <cfelseif Tipps.Tendenz is 0>
-	    <tr>
 		  <td onclick="ajax_savetipp('#ID#','#session.userid#','1','game_#ID#_1','game_#ID#_0','game_#ID#_2')"><div align="center" id="game_#ID#_1" style="border:1px solid ##000000; -moz-border-radius:4px; background-color: ##f7f7f7; width:18px; cursor: pointer;">1</div></td>
 		  <td onclick="ajax_savetipp('#ID#','#session.userid#','0','game_#ID#_0','game_#ID#_1','game_#ID#_2')"><div align="center" id="game_#ID#_0"  style="border:1px solid ##000000; -moz-border-radius:4px; background-color: ##FFCC00; width:18px; cursor: pointer;">0</div></td>
 		  <td onclick="ajax_savetipp('#ID#','#session.userid#','2','game_#ID#_2','game_#ID#_0','game_#ID#_1')"><div align="center" id="game_#ID#_2" style="border:1px solid ##000000; -moz-border-radius:4px; background-color: ##f7f7f7; width:18px; cursor: pointer;">2</div></td>
-		</tr>
 	   <cfelseif Tipps.Tendenz is 2>
-	    <tr>
 		  <td onclick="ajax_savetipp('#ID#','#session.userid#','1','game_#ID#_1','game_#ID#_0','game_#ID#_2')"><div align="center" id="game_#ID#_1" style="border:1px solid ##000000; -moz-border-radius:4px; background-color: ##f7f7f7; width:18px; cursor: pointer;">1</div></td>
 		  <td onclick="ajax_savetipp('#ID#','#session.userid#','0','game_#ID#_0','game_#ID#_1','game_#ID#_2')"><div align="center" id="game_#ID#_0"  style="border:1px solid ##000000; -moz-border-radius:4px; background-color: ##f7f7f7; width:18px; cursor: pointer;">0</div></td>
 		  <td onclick="ajax_savetipp('#ID#','#session.userid#','2','game_#ID#_2','game_#ID#_0','game_#ID#_1')"><div align="center" id="game_#ID#_2" style="border:1px solid ##000000; -moz-border-radius:4px; background-color: ##FFCC00; width:18px; cursor: pointer;">2</div></td>
-		</tr>
 	   <cfelse>
-	    <tr>
 		  <td onclick="ajax_savetipp('#ID#','#session.userid#','1','game_#ID#_1','game_#ID#_0','game_#ID#_2')"><div align="center" id="game_#ID#_1" style="border:1px solid ##000000; -moz-border-radius:4px; background-color: ##DDFECC; width:18px; cursor: pointer;">1</div></td>
 		  <td onclick="ajax_savetipp('#ID#','#session.userid#','0','game_#ID#_0','game_#ID#_1','game_#ID#_2')"><div align="center" id="game_#ID#_0"  style="border:1px solid ##000000; -moz-border-radius:4px; background-color: ##DDFECC; width:18px; cursor: pointer;">0</div></td>
 		  <td onclick="ajax_savetipp('#ID#','#session.userid#','2','game_#ID#_2','game_#ID#_0','game_#ID#_1')"><div align="center" id="game_#ID#_2" style="border:1px solid ##000000; -moz-border-radius:4px; background-color: ##DDFECC; width:18px; cursor: pointer;">2</div></td>
-		</tr>
 		</cfif>
 		
 		<CFELSE>
-		
 		<cfif Tipps.Tendenz is 1>
-	    <tr>
 		  <td><div align="center" id="game_#ID#_1" style="border:1px solid ##000000; -moz-border-radius:4px; background-color: ##ffffff; width:18px;">1</div></td>
-		  <td colspan="2"><cfif Tore_Heim GTE 0><a href="user_spieltag_details.cfm?spieltag=#spieltag#"><img src="pictures/icon_members_2.gif" border="0" alt=""></a></cfif></td>
-		</tr>
+		  <td colspan="2" width="47">&nbsp;</td>
 	   <cfelseif Tipps.Tendenz is 0>
-	    <tr>
 		  <td><div align="center" id="game_#ID#_0"  style="border:1px solid ##000000; -moz-border-radius:4px; background-color: ##ffffff; width:18px;">0</div></td>
-		  <td colspan="2"><cfif Tore_Heim GTE 0><a href="user_spieltag_details.cfm?spieltag=#spieltag#"><img src="pictures/icon_members_2.gif" border="0" alt=""></a></cfif></td>
-		</tr>
+		  <td colspan="2" width="47">&nbsp;</td>
 	   <cfelseif Tipps.Tendenz is 2>
-	    <tr>
 		  <td><div align="center" id="game_#ID#_2" style="border:1px solid ##000000; -moz-border-radius:4px; background-color: ##ffffff; width:18px;">2</div></td>
-		  <td colspan="2"><cfif Tore_Heim GTE 0><a href="user_spieltag_details.cfm?spieltag=#spieltag#"><img src="pictures/icon_members_2.gif" border="0" alt=""></a></cfif></td>
-		</tr>
+		  <td colspan="2" width="47">&nbsp;</td>
 	   <cfelse>
-	    <tr>
 		  <td><div align="center" id="game_#ID#_1" style="border:1px solid ##000000; -moz-border-radius:4px; background-color: ##FECCCC; width:18px;">x</div></td>
-		  <td colspan="2"><cfif Tore_Heim GTE 0><a href="user_spieltag_details.cfm?spieltag=#spieltag#"><img src="pictures/icon_members_2.gif" border="0" alt=""></a></cfif></td>
-		</tr>
+		  <td colspan="2" width="47">&nbsp;</td>
 		</cfif>		
 		
 		</CFIF>
+		<td align="right" width="47"><span class="smallfont">(#UserTipps.recordcount#/#Users.recordcount#)</span></td>
+		</tr>
 	  </table>
     </td>
 	<cfif Tore_Heim GTE 0>
